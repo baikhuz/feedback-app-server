@@ -20,12 +20,15 @@ passport.deserializeUser((id, done) => {
 
 // creates a new instance of strategy class,
 // specifies parameters including the callback url
+// by setting proxy to true, we are allowing heroku
+// proxy to work with our app
 passport.use(
   new GoogleStrategy(
     {
       clientID: keys.googleCliendID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/callback'
+      callbackURL: '/auth/google/callback',
+      proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
       // see if the user ID exists in the db before creating
