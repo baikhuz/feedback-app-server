@@ -30,20 +30,19 @@ passport.use(
       callbackURL: '/auth/google/callback',
       proxy: true
     },
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       // see if the user ID exists in the db before creating
-      User.findOne({ googleId: profile.id })
-        .then(existingUser => {
-          existingUser
-            ? // VV built-in function that tells passport to procees with the authentication flow
-              // VV first arg is error, second is the user to authenticate
-              done(null, existingUser)
-            : // VV creates the new instance of User class and saves a record to mongo
-              new User({ googleId: profile.id })
-                .save()
-                .then(user => done(null, user))
-        })
-        .catch(err => console.log(err.message))
+      const existingUser = await User.findOne({ googleId: profile.id })
+
+      if (existingUser) {
+        // VV built-in function that tells passport to procees with the authentication flow
+        // VV first arg is error, second is the user to authenticate
+        done(null, existingUser)
+      } else {
+        // VV creates the new instance of User class and saves a record to mongo
+        const user = await new User({ googleId: profile.id }).save()
+        done(null, user)
+      }
     }
   )
 )
