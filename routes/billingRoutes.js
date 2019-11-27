@@ -10,7 +10,7 @@ module.exports = app => {
   app.post('/api/stripe', requireLogin, async (req, res) => {
     // source is the token passed by the stripe-checkout on the frontend
     const charge = await stripe.charges.create({
-      amount: 500,
+      amount: 50,
       currency: 'usd',
       description: '5 credits for feedbackr',
       source: req.body.id
