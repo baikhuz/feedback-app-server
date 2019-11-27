@@ -1,4 +1,9 @@
 node_modules
 dev.js
+<<<<<<< HEAD
 .env.production
 .env.development
+=======
+.env.development
+.env.production
+>>>>>>> fbb2e1e074167b02263c1a5f3aeb6fedcc0b188a
